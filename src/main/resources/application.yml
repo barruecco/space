@@ -1,0 +1,42 @@
+server:
+  port: 8083
+spring:
+  data:
+    rest:
+      basePath: /space/api
+  profiles: default
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        input:
+          group: space
+          destination: campus
+          contentType: application/json
+        output:
+          destination: campus
+          contentType: application/json
+---
+server:
+  port: 8080
+
+spring:
+  profiles: docker
+  data:
+    rest:
+      basePath: /space/api
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: my-kafka.kafka.svc.cluster.local:9092
+      bindings:
+        input:
+          group: space
+          destination: campus
+          contentType: application/json
+        output:
+          destination: campus
+          contentType: application/json
